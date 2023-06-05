@@ -18,7 +18,7 @@ export const register = catchAsyncError(async (req, res, next) => {
         return next(new ErrorHandler("User already exists", 409));
     }
 
-    if (email === process.env.ADMIN_EMAIL && password === process.env.ADMIN_PASSWORD) {
+    if (email === process.env.ADMIN_EMAIL) {
         user = await User.create({
             firstName,
             lastName,
@@ -59,7 +59,7 @@ export const logout = catchAsyncError(async (req, res, next) => {
         .cookie("token", null, {
             expires: new Date(Date.now()),
             httpOnly: true,
-            secure: true,
+            // secure: true,
             sameSite: "none",
         })
         .json({
