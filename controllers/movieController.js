@@ -71,7 +71,7 @@ export const createMovie = catchAsyncError(async (req, res, next) => {
 })
 
 export const getMovies = catchAsyncError(async (req, res, next) => {
-    const resultPerPage = 3;
+    const resultPerPage = 10;
     const apiFeatures = new ApiFeatures(Movie.find(), req.query).search().filter();
     const allMovies = await apiFeatures.query;
     const reversedMovies = allMovies.reverse();
