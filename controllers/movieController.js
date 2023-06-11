@@ -17,19 +17,19 @@ export const createMovie = catchAsyncError(async (req, res, next) => {
     }
 
     const qualityArray = [];
-    if(quality1080){
-        qualityArray.push({ 
+    if (quality1080) {
+        qualityArray.push({
             qualityName: quality1080,
             qualityLink: quality1080link
         });
     }
-    if(quality720){
+    if (quality720) {
         qualityArray.push({
             qualityName: quality720,
             qualityLink: quality720link
-        }); 
+        });
     }
-    if(quality480){
+    if (quality480) {
         qualityArray.push({
             qualityName: quality480,
             qualityLink: quality480link
@@ -115,5 +115,13 @@ export const getMovieDetail = catchAsyncError(async (req, res, next) => {
     res.status(200).json({
         success: true,
         movie,
+    });
+});
+
+export const totalMovies = catchAsyncError(async (req, res, next) => {
+    const totalMovies = await Movie.countDocuments();
+    res.status(200).json({
+        success: true,
+        totalMovies,
     });
 });
