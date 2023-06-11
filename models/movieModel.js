@@ -21,10 +21,16 @@ const schema = new mongoose.Schema({
         type: [String],
         default: [],
     },
-    quality: {
-        type: [String],
-        default: [],
-    },
+    quality: [
+        {
+            qualityName: {
+                type: String,
+            },
+            qualityLink: {
+                type: String,
+            }
+        }
+    ],
     image: {
         public_id: {
             type: String,
@@ -35,10 +41,6 @@ const schema = new mongoose.Schema({
             required: true,
         },
     },
-    movieUrl: {
-        type: String,
-        required: true,
-    }
 })
 
 export const Movie = mongoose.model('Movie', schema);

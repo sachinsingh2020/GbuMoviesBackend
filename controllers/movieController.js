@@ -6,14 +6,36 @@ import { Movie } from "../models/movieModel.js";
 import ApiFeatures from "../utils/apiFeatures.js";
 
 export const createMovie = catchAsyncError(async (req, res, next) => {
-    let { name, releaseDate, movieUrl, filmIndustry } = req.body;
+    let { name, releaseDate, filmIndustry } = req.body;
     const genres = req.body.genre;
     const audios = req.body.audio;
-    const qualities = req.body.quality;
+    const { quality1080, quality1080link, quality720, quality720link, quality480, quality480link } = req.body;
+
 
     if (!name || !releaseDate) {
         return next(new ErrorHandler('All fields are required', 400));
     }
+
+    const qualityArray = [];
+    if(quality1080){
+        qualityArray.push({ 
+            qualityName: quality1080,
+            qualityLink: quality1080link
+        });
+    }
+    if(quality720){
+        qualityArray.push({
+            qualityName: quality720,
+            qualityLink: quality720link
+        }); 
+    }
+    if(quality480){
+        qualityArray.push({
+            qualityName: quality480,
+            qualityLink: quality480link
+        });
+    }
+
     const file = req.file;
 
     if (!file) {
@@ -29,18 +51,17 @@ export const createMovie = catchAsyncError(async (req, res, next) => {
         releaseDate,
         genre: genres,
         audio: audios,
-        quality: qualities,
+        quality: qualityArray,
         image: {
             public_id: mycloud.public_id,
             url: mycloud.secure_url,
         },
-        movieUrl,
         filmIndustry,
     })
 
     await movie.save();
 
-    console.log(movie);
+    // console.log(movie);
 
     res.status(201).json({
         success: true,
@@ -82,5 +103,17 @@ export const deleteMovie = catchAsyncError(async (req, res, next) => {
     res.status(200).json({
         success: true,
         message: 'Movie deleted successfully',
+    });
+});
+
+export const getMovieDetail = catchAsyncError(async (req, res, next) => {
+
+    const movie = await Movie.findById(req.params.id);
+
+    if (!movie) return next(new ErrorHandler("Movie not found", 404));
+
+    res.status(200).json({
+        success: true,
+        movie,
     });
 });
