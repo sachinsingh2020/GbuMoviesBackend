@@ -72,6 +72,7 @@ export const createMovie = catchAsyncError(async (req, res, next) => {
 
 export const getMovies = catchAsyncError(async (req, res, next) => {
     const resultPerPage = 10;
+    const moviesCount = await Movie.countDocuments();
     const apiFeatures = new ApiFeatures(Movie.find(), req.query).search().filter();
     const allMovies = await apiFeatures.query;
     const reversedMovies = allMovies.reverse();
@@ -85,6 +86,8 @@ export const getMovies = catchAsyncError(async (req, res, next) => {
     res.status(200).json({
         success: true,
         movies: paginatedMovies,
+        moviesCount,
+        resultPerPage,
     });
 });
 
