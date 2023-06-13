@@ -76,6 +76,8 @@ export const getMovies = catchAsyncError(async (req, res, next) => {
     const apiFeatures = new ApiFeatures(Movie.find(), req.query).search().filter();
     const allMovies = await apiFeatures.query;
     const reversedMovies = allMovies.reverse();
+    let filteredMoviesCount = reversedMovies.length;
+
 
     // Pagination
     const page = Number(req.query.page) || 1;
@@ -88,6 +90,7 @@ export const getMovies = catchAsyncError(async (req, res, next) => {
         movies: paginatedMovies,
         moviesCount,
         resultPerPage,
+        filteredMoviesCount,
     });
 });
 
