@@ -152,10 +152,15 @@ export const isUserLoggedIn = catchAsyncError(async (req, res, next) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     let user = await User.findById(decoded._id);
+    let isAuthenticated = false;
+    if (user) {
+        isAuthenticated = true;
+    }
 
     res.status(200).json({
         success: true,
         user,
+        isAuthenticated,
     });
 });
 
