@@ -161,6 +161,7 @@ export const isUserLoggedIn = catchAsyncError(async (req, res, next) => {
         success: true,
         user,
         isAuthenticated,
+        message: "User is logged in",
     });
 });
 
