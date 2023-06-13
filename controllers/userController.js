@@ -4,6 +4,8 @@ import { sendToken } from "../utils/sendToken.js";
 import { sendEmail } from "../utils/sendEmail.js";
 import crypto from "crypto";
 import { User } from "../models/userModel.js";
+import jwt from 'jsonwebtoken';
+
 
 export const register = catchAsyncError(async (req, res, next) => {
     const { firstName, lastName, email, password } = req.body;
@@ -138,6 +140,22 @@ export const contactUs = catchAsyncError(async (req, res, next) => {
     res.status(200).json({
         success: true,
         message: `Your request has been sent to Admin`,
+    });
+});
+
+export const isUserLoggedIn = catchAsyncError(async (req, res, next) => {
+    const { token } = req.cookies;
+    // console.log(token);
+
+    if (!token) return next(new ErrorHandler("Please login to access", 401));
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    let user = await User.findById(decoded._id);
+
+    res.status(200).json({
+        success: true,
+        user,
     });
 });
 
