@@ -67,6 +67,7 @@ export const logout = catchAsyncError(async (req, res, next) => {
         .json({
             success: true,
             message: "Logged Out Successfully",
+            isAuthenticated: false,
         });
 });
 

@@ -10,7 +10,7 @@ router.route('/createmovie').post(isAuthenticated, singleUpload, createMovie);
 
 router.route('/getmovies').get(getMovies);
 
-router.route('/deletemovie/:id').delete(isAuthenticated, deleteMovie);
+router.route('/deletemovie/:id').delete(deleteMovie);
 
 router.route('/getmoviedetail/:id').get(getMovieDetail);
 
